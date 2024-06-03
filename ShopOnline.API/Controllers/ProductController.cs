@@ -28,18 +28,49 @@ namespace ShopOnline.API.Controllers
                 {
                     return NotFound();
                 }
-                else 
+                else
                 {
                     var productsDtos = products.ConverttoDto(productCategories);
                     return Ok(productsDtos);
                 }
 
-                     
-            } 
+
+            }
             catch (Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError,"Error retrieving data from the databse");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the databse");
+            }
+
+
+
+        }
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ProductDto>> GetItem(int id)
+        {
+
+            try
+            {
+                var product = await this.productRepository.GetItem(id);
+
+                if (product == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    var productCategory = await this.productRepository.GetCategory(product.CategoryId);
+                    var productDto = product.convertToDto(productCategory); 
+
+                    return Ok(productDto);
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the databse");
             }
         }
     }

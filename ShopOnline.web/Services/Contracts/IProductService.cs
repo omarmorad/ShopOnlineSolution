@@ -1,6 +1,9 @@
-﻿namespace ShopOnline.web.Services.Contracts
+﻿using ShopOnline.Models.Dtos;
+
+namespace ShopOnline.web.Services.Contracts
 {
     public interface IProductService
     {
+        Task<IEnumerable<ProductDto>> GetItems();
     }
 }
