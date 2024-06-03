@@ -1,6 +1,29 @@
-﻿namespace ShopOnline.web.Services
+﻿using ShopOnline.Models.Dtos;
+using ShopOnline.web.Services.Contracts;
+using System.Net.Http.Json;
+
+namespace ShopOnline.web.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
+        private readonly HttpClient httpClient;
+        public ProductService(HttpClient httpClient)
+        {
+            this.httpClient = httpClient;
+              
+            
+        }
+        public async Task<IEnumerable<ProductDto>> GetItems()
+        {
+            try
+            {
+                var products = await this.httpClient.GetFromJsonAsync<IEnumerable<ProductDto>>("api/Product");
+                return products;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
